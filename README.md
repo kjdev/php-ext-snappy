@@ -23,7 +23,7 @@ string snappy_compress( string $data )
 
 data:
 
-    The dataa to compress.
+    The data to compress.
 
 ### return values ###
 
