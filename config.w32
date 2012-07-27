@@ -1,0 +1,8 @@
+ARG_ENABLE("snappy", "enable snappy support", "no");
+
+if (PHP_SNAPPY != "no") {
+   snappy_source =
+     "snappy.c";
+   EXTENSION("snappy", snappy_source);
+   PHP_INSTALL_HEADERS("ext/snappy/", "php_snappy.h");
+}
