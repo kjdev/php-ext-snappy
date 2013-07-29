@@ -28,56 +28,74 @@ PHP_ARG_WITH(snappy-includedir, for snappy header,
 [  --with-snappy-includedir=DIR  snappy header files], yes)
 
 if test "$PHP_SNAPPY" != "no"; then
-  dnl # check with-path
 
-  if test "$PHP_SNAPPY_INCLUDEDIR" != "no" && test "$PHP_SNAPPY_INCLUDEDIR" != "yes"; then
-    if test -r "$PHP_SNAPPY_INCLUDEDIR/snappy.h"; then
-      SNAPPY_DIR="$PHP_SNAPPY_INCLUDEDIR"
-    else
-      AC_MSG_ERROR([Can't find snappy headers under "$PHP_SNAPPY_INCLUDEDIR"])
-    fi
-  else
-    SEARCH_PATH="/usr/local /usr"
-    SEARCH_FOR="/include/snappy.h"
-    if test -r $PHP_SNAPPY/$SEARCH_FOR; then # path given as parameter
-      SNAPPY_DIR="$PHP_SNAPPY/include"
-    else # search default path list
-      AC_MSG_CHECKING([for snappy files in default path])
-      for i in $SEARCH_PATH ; do
-        if test -r $i/$SEARCH_FOR; then
-          SNAPPY_DIR="$i/include"
-          AC_MSG_RESULT(found in $i)
-        fi
-      done
-    fi
-  fi
+  dnl snappy
 
-  if test -z "$SNAPPY_DIR"; then
-    AC_MSG_RESULT([not found])
-    AC_MSG_ERROR([Can't find snappy headers])
-  fi
+  SNAPPY_MAJOR="1"
+  SNAPPY_MINOR="1"
+  SNAPPY_PATCHLEVEL="0"
 
-  LIBNAME=snappy
-  AC_MSG_CHECKING([for snappy])
-  AC_TRY_COMPILE(
-  [
-    #include "$SNAPPY_DIR/snappy-c.h"
-  ],[
-    snappy_max_compressed_length(1);
-  ],[
-    AC_MSG_RESULT(yes)
-    PHP_ADD_LIBRARY_WITH_PATH($LIBNAME, $SNAPPY_DIR/lib, SNAPPY_SHARED_LIBADD)
-    AC_DEFINE(HAVE_SNAPPYLIB,1,[ ])
-  ],[
-    AC_MSG_RESULT([error])
-    AC_MSG_ERROR([wrong snappy lib version or lib not found : $SNAPPY_DIR])
+  AC_PROG_CXX
+  AC_LANG([C++])
+  AC_C_BIGENDIAN
+  AC_CHECK_HEADERS([stdint.h stddef.h sys/mman.h sys/resource.h windows.h byteswap.h sys/byteswap.h sys/endian.h sys/time.h])
+
+  AC_CHECK_FUNC([mmap])
+
+  AC_MSG_CHECKING([if the compiler supports __builtin_expect])
+  AC_TRY_COMPILE(, [
+    return __builtin_expect(1, 1) ? 1 : 0
+  ], [
+    snappy_have_builtin_expect=yes
+    AC_MSG_RESULT([yes])
+  ], [
+    snappy_have_builtin_expect=no
+    AC_MSG_RESULT([no])
   ])
+  if test x$snappy_have_builtin_expect = xyes ; then
+    AC_DEFINE([HAVE_BUILTIN_EXPECT], [1], [Define to 1 if the compiler supports __builtin_expect.])
+  fi
 
-dnl  PHP_ADD_LIBRARY_WITH_PATH($LIBNAME, $SNAPPY_DIR/lib, SNAPPY_SHARED_LIBADD)
+  AC_MSG_CHECKING([if the compiler supports __builtin_ctzll])
+  AC_TRY_COMPILE(, [
+    return (__builtin_ctzll(0x100000000LL) == 32) ? 1 : 0
+  ], [
+    snappy_have_builtin_ctz=yes
+    AC_MSG_RESULT([yes])
+  ], [
+    snappy_have_builtin_ctz=no
+    AC_MSG_RESULT([no])
+  ])
+  if test x$snappy_have_builtin_ctz = xyes ; then
+    AC_DEFINE([HAVE_BUILTIN_CTZ], [1], [Define to 1 if the compiler supports __builtin_ctz and friends.])
+  fi
 
-  PHP_SUBST(SNAPPY_SHARED_LIBADD)
+  if test "$ac_cv_header_stdint_h" = "yes"; then
+    AC_SUBST([ac_cv_have_stdint_h], [1])
+  else
+    AC_SUBST([ac_cv_have_stdint_h], [0])
+  fi
+  if test "$ac_cv_header_stddef_h" = "yes"; then
+    AC_SUBST([ac_cv_have_stddef_h], [1])
+  else
+    AC_SUBST([ac_cv_have_stddef_h], [0])
+  fi
+  if test "$ac_cv_header_sys_uio_h" = "yes"; then
+    AC_SUBST([ac_cv_have_sys_uio_h], [1])
+  else
+    AC_SUBST([ac_cv_have_sys_uio_h], [0])
+  fi
 
-  PHP_NEW_EXTENSION(snappy, snappy.c, $ext_shared)
+  AC_SUBST([SNAPPY_MAJOR])
+  AC_SUBST([SNAPPY_MINOR])
+  AC_SUBST([SNAPPY_PATCHLEVEL])
+
+  AC_CONFIG_FILES([snappy/snappy-stubs-public.h snappy/snappy-version.h])
+  AC_OUTPUT
+
+  SNAPPY_SOURCES="snappy/snappy-c.cc snappy/snappy.cc snappy/snappy-stubs-internal.cc snappy/snappy-sinksource.cc"
+
+  PHP_NEW_EXTENSION(snappy, snappy.c $SNAPPY_SOURCES, $ext_shared)
 
   ifdef([PHP_INSTALL_HEADERS],
   [
