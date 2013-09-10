@@ -29,8 +29,10 @@ PHP_ARG_WITH(snappy-includedir, for snappy header,
 
 if test "$PHP_SNAPPY" != "no"; then
 
-  dnl snappy
+  dnl compiler C++:
+  PHP_REQUIRE_CXX()
 
+  dnl snappy
   SNAPPY_MAJOR="1"
   SNAPPY_MINOR="1"
   SNAPPY_PATCHLEVEL="0"
@@ -93,6 +95,28 @@ if test "$PHP_SNAPPY" != "no"; then
   AC_CONFIG_FILES([snappy/snappy-stubs-public.h snappy/snappy-version.h])
   AC_OUTPUT
 
+  dnl Check for stdc++
+  LIBNAME=stdc++
+  AC_MSG_CHECKING([for stdc++])
+  AC_LANG_SAVE
+  AC_LANG_CPLUSPLUS
+  AC_TRY_COMPILE(
+  [
+    #include <string>
+    using namespace std;
+  ],[
+    string dummy;
+  ],[
+    AC_MSG_RESULT(yes)
+    PHP_ADD_LIBRARY($LIBNAME, , SNAPPY_SHARED_LIBADD)
+  ],[
+    AC_MSG_ERROR([wrong stdc++ library not found])
+  ])
+  AC_LANG_RESTORE
+
+  PHP_SUBST(SNAPPY_SHARED_LIBADD)
+
+  dnl Sources
   SNAPPY_SOURCES="snappy/snappy-c.cc snappy/snappy.cc snappy/snappy-stubs-internal.cc snappy/snappy-sinksource.cc"
 
   PHP_NEW_EXTENSION(snappy, snappy.c $SNAPPY_SOURCES, $ext_shared)
