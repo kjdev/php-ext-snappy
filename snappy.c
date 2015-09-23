@@ -10,11 +10,6 @@
 
 /* snappy */
 #include "snappy/snappy-c.h"
-#ifdef PHP_WIN32
-#include "snappy/win32/snappy-version.h"
-#else
-#include "snappy/snappy-version.h"
-#endif
 
 static ZEND_FUNCTION(snappy_compress);
 static ZEND_FUNCTION(snappy_uncompress);
@@ -35,15 +30,10 @@ static const zend_function_entry snappy_functions[] = {
 
 PHP_MINFO_FUNCTION(snappy)
 {
-    char buf[32];
-
-    snprintf(buf, sizeof(buf), "%d.%d.%d",
-             SNAPPY_MAJOR, SNAPPY_MINOR, SNAPPY_PATCHLEVEL);
-
     php_info_print_table_start();
     php_info_print_table_row(2, "Snappy support", "enabled");
     php_info_print_table_row(2, "Extension Version", SNAPPY_EXT_VERSION);
-    php_info_print_table_row(2, "Snappy Version", buf);
+    php_info_print_table_row(2, "Snappy Version", SNAPPY_LIB_VERSION);
     php_info_print_table_end();
 }
 

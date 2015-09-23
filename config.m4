@@ -35,7 +35,7 @@ if test "$PHP_SNAPPY" != "no"; then
   dnl snappy
   SNAPPY_MAJOR="1"
   SNAPPY_MINOR="1"
-  SNAPPY_PATCHLEVEL="0"
+  SNAPPY_PATCHLEVEL="3"
 
   AC_PROG_CXX
   AC_LANG([C++])
@@ -92,7 +92,7 @@ if test "$PHP_SNAPPY" != "no"; then
   AC_SUBST([SNAPPY_MINOR])
   AC_SUBST([SNAPPY_PATCHLEVEL])
 
-  AC_CONFIG_FILES([snappy/snappy-stubs-public.h snappy/snappy-version.h])
+  AC_CONFIG_FILES([snappy/snappy-stubs-public.h])
   AC_OUTPUT
 
   dnl Check for stdc++

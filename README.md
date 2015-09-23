@@ -1,49 +1,54 @@
-# php-ext-snappy #
+# Snappy Extension for PHP
 
-This PHP extension is Snappy.
+[![Build Status](https://secure.travis-ci.org/kjdev/php-ext-snappy.png?branch=master)](http://travis-ci.org/kjdev/php-ext-snappy)
 
-## Build ##
+This extension allows Snappy.
+
+Documentation for Snappy can be found at
+[» http://google.github.io/snappy/](http://google.github.io/snappy/).
+
+## Build
 
     % phpize
     % ./configure
     % make
     % make install
 
-## Configration ##
+## Configration
 
 snappy.ini:
 
     extension=snappy.so
 
-## Function : snappy_compress ##
+## Function : snappy_compress
 
 string snappy_compress( string $data )
 
-### parameters ###
+### parameters
 
 data:
 
     The data to compress.
 
-### return values ###
+### return values
 
 The compressed string or FALSE if an error occurred.
 
-## Function : snappy_uncompress ##
+## Function : snappy_uncompress
 
 string snappy_uncompress( string $data )
 
-### parameters ###
+### parameters
 
 name:
 
     The data compressed by snappy_gzcompress(). 
 
-### return values ###
+### return values
 
 The original uncompressed data or FALSE on error.
 
-## Example ##
+## Example
 
     $compressed = snappy_compress('Compress me');
 
