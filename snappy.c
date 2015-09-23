@@ -97,7 +97,11 @@ static ZEND_FUNCTION(snappy_compress)
 
     if (snappy_compress(Z_STRVAL_P(data), Z_STRLEN_P(data),
                         output, &output_len) == SNAPPY_OK) {
+#if ZEND_MODULE_API_NO >= 20141001
+        RETVAL_STRINGL(output, output_len);
+#else
         RETVAL_STRINGL(output, output_len, 1);
+#endif
     } else {
         RETVAL_FALSE;
     }
@@ -134,9 +138,13 @@ static ZEND_FUNCTION(snappy_uncompress)
         RETURN_FALSE;
     }
 
-    if (snappy_uncompress(Z_STRVAL_P(data), Z_STRLEN_P(data), 
+    if (snappy_uncompress(Z_STRVAL_P(data), Z_STRLEN_P(data),
                           output, &output_len) == SNAPPY_OK) {
+#if ZEND_MODULE_API_NO >= 20141001
+        RETVAL_STRINGL(output, output_len);
+#else
         RETVAL_STRINGL(output, output_len, 1);
+#endif
     } else {
         zend_error(E_WARNING, "snappy_uncompress : data error");
         RETVAL_FALSE;
