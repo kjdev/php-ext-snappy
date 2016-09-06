@@ -9,7 +9,7 @@
 #include "php_snappy.h"
 
 /* snappy */
-#include "snappy/snappy-c.h"
+#include <snappy-c.h>
 
 static ZEND_FUNCTION(snappy_compress);
 static ZEND_FUNCTION(snappy_uncompress);
@@ -33,7 +33,11 @@ PHP_MINFO_FUNCTION(snappy)
     php_info_print_table_start();
     php_info_print_table_row(2, "Snappy support", "enabled");
     php_info_print_table_row(2, "Extension Version", SNAPPY_EXT_VERSION);
+#ifdef HAVE_LIBSNAPPY
+    php_info_print_table_row(2, "Snappy Version", "system library");
+#else
     php_info_print_table_row(2, "Snappy Version", SNAPPY_LIB_VERSION);
+#endif
     php_info_print_table_end();
 }
 
