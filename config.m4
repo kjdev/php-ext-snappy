@@ -25,9 +25,39 @@ PHP_ARG_ENABLE(snappy, whether to enable snappy support,
 [  --enable-snappy           Enable snappy support])
 
 PHP_ARG_WITH(snappy-includedir, for snappy header,
-[  --with-snappy-includedir=DIR  snappy header files], yes)
+[  --with-snappy-includedir=DIR  snappy header files], no, no)
 
 if test "$PHP_SNAPPY" != "no"; then
+
+  AC_MSG_CHECKING([searching for libsnappy])
+
+  if test "$PHP_SNAPPY_INCLUDEDIR" != "no"; then
+    for i in $PHP_SNAPPY_INCLUDEDIR /usr/local /usr; do
+      if test -r $i/include/snappy-c.h; then
+        LIBSNAPPY_CFLAGS="-I$i/include"
+        LIBSNAPPY_LIBDIR="$i/$PHP_LIBDIR"
+        AC_MSG_RESULT(found in $i)
+        break
+      fi
+    done
+    if test -z "$LIBSNAPPY_LIBDIR"; then
+      AC_MSG_RESULT(not found)
+      AC_MSG_ERROR(Please reinstall the snappy library distribution)
+    fi
+    PHP_CHECK_LIBRARY(snappy, snappy_compress,
+    [
+      PHP_ADD_LIBRARY_WITH_PATH(snappy, $LIBSNAPPY_LIBDIR, SNAPPY_SHARED_LIBADD)
+      AC_DEFINE(HAVE_LIBSNAPPY,1,[ ])
+    ], [
+      AC_MSG_ERROR(could not find usable libsnappy)
+    ], [
+      -L$LIBSNAPPY_LIBDIR
+    ])
+
+    PHP_SUBST(SNAPPY_SHARED_LIBADD)
+    PHP_NEW_EXTENSION(snappy, snappy.c, $ext_shared,, $LIBSNAPPY_CFLAGS)
+  else
+    AC_MSG_RESULT(use bundled version)
 
   dnl compiler C++:
   PHP_REQUIRE_CXX()
@@ -121,10 +151,7 @@ if test "$PHP_SNAPPY" != "no"; then
 
   PHP_NEW_EXTENSION(snappy, snappy.c $SNAPPY_SOURCES, $ext_shared)
 
-  ifdef([PHP_INSTALL_HEADERS],
-  [
-    PHP_INSTALL_HEADERS([ext/snappy/], [php_snappy.h])
-  ], [
-    PHP_ADD_MAKEFILE_FRAGMENT
-  ])
+  PHP_ADD_BUILD_DIR($ext_builddir/snappy, 1)
+  PHP_ADD_INCLUDE([$ext_srcdir/snappy])
+  fi
 fi

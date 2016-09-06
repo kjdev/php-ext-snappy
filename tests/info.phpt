@@ -14,5 +14,5 @@ snappy
 
 Snappy support => enabled
 Extension Version => %d.%d.%d
-Snappy Version => %d.%d.%d
+Snappy Version => %s
 %a
