@@ -14,6 +14,8 @@ Documentation for Snappy can be found at
     % make
     % make install
 
+> use system library: `./configure --with-snappy-includedir=/usr`
+
 ## Configration
 
 snappy.ini:
