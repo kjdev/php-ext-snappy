@@ -21,5 +21,3 @@ autom4te.cache/
 modules/
 build/
 run-tests.php
-
-snappy/snappy-stubs-public.h
