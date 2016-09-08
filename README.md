@@ -10,7 +10,7 @@ Documentation for Snappy can be found at
 ## Build
 
     % git clone --recursive --depth=1 https://github.com/kjdev/php-ext-snappy.git
-    % php-ext-snappy
+    % cd php-ext-snappy
     % phpize
     % ./configure
     % make
