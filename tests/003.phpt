@@ -10,7 +10,10 @@ echo "*** Testing snappy_compress() : variation ***\n";
 echo "\n-- Testing multiple compression --\n";
 $output = snappy_compress($data);
 var_dump(md5($output));
-var_dump(md5(snappy_compress($output)));
+
+$c = snappy_compress($output);
+var_dump(md5($output) === md5($c));
+var_dump(md5($output) === md5(snappy_uncompress($c)));
 
 ?>
 ===Done===
@@ -19,5 +22,6 @@ var_dump(md5(snappy_compress($output)));
 
 -- Testing multiple compression --
 string(32) "aa706ffad8df5ca3f37f4ec061d91ca2"
-string(32) "1552ea4a75da186308c7351ae1f4ab09"
+bool(false)
+bool(true)
 ===Done===
