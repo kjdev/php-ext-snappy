@@ -65,7 +65,7 @@ if test "$PHP_SNAPPY" != "no"; then
   dnl snappy
   SNAPPY_MAJOR="1"
   SNAPPY_MINOR="1"
-  SNAPPY_PATCHLEVEL="3"
+  SNAPPY_PATCHLEVEL="7"
 
   AC_PROG_CXX
   AC_LANG([C++])
@@ -104,23 +104,36 @@ if test "$PHP_SNAPPY" != "no"; then
 
   if test "$ac_cv_header_stdint_h" = "yes"; then
     AC_SUBST([ac_cv_have_stdint_h], [1])
+    AC_SUBST([HAVE_STDINT_H_01], [1])
   else
     AC_SUBST([ac_cv_have_stdint_h], [0])
+    AC_SUBST([HAVE_STDINT_H_01], [0])
   fi
   if test "$ac_cv_header_stddef_h" = "yes"; then
     AC_SUBST([ac_cv_have_stddef_h], [1])
+    AC_SUBST([HAVE_STDDEF_H_01], [1])
   else
     AC_SUBST([ac_cv_have_stddef_h], [0])
+    AC_SUBST([HAVE_STDDEF_H_01], [0])
   fi
   if test "$ac_cv_header_sys_uio_h" = "yes"; then
     AC_SUBST([ac_cv_have_sys_uio_h], [1])
+    AC_SUBST([HAVE_SYS_UIO_H_01], [1])
   else
     AC_SUBST([ac_cv_have_sys_uio_h], [0])
+    AC_SUBST([HAVE_SYS_UIO_H_01], [0])
   fi
 
   AC_SUBST([SNAPPY_MAJOR])
   AC_SUBST([SNAPPY_MINOR])
   AC_SUBST([SNAPPY_PATCHLEVEL])
+
+  if test -f "snappy/snappy-stubs-public.h.in"; then
+    if test "$SNAPPY_PATCHLEVEL" -ge 7; then
+      mv snappy/snappy-stubs-public.h.in snappy/snappy-stubs-public.h.in.orig
+      sed 's/${\(HAVE_[[A-Z\_]]*_H_01\)}/@\1@/' snappy/snappy-stubs-public.h.in.orig > snappy/snappy-stubs-public.h.in
+    fi
+  fi
 
   AC_CONFIG_FILES([snappy/snappy-stubs-public.h])
   AC_OUTPUT
