@@ -8,6 +8,11 @@
 extern zend_module_entry snappy_module_entry;
 #define phpext_snappy_ptr &snappy_module_entry
 
+/* Support PHP 5.2 */
+#ifndef ZEND_FE_END
+#define ZEND_FE_END {NULL, NULL, NULL}
+#endif
+
 #ifdef PHP_WIN32
 #   define PHP_SNAPPY_API __declspec(dllexport)
 #elif defined(__GNUC__) && __GNUC__ >= 4
