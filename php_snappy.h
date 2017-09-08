@@ -2,7 +2,7 @@
 #ifndef PHP_SNAPPY_H
 #define PHP_SNAPPY_H
 
-#define SNAPPY_EXT_VERSION "0.1.8"
+#define SNAPPY_EXT_VERSION "0.1.9"
 #define SNAPPY_LIB_VERSION "1.1.7"
 
 extern zend_module_entry snappy_module_entry;
