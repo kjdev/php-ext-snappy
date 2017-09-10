@@ -8,7 +8,7 @@
 extern zend_module_entry snappy_module_entry;
 #define phpext_snappy_ptr &snappy_module_entry
 
-/* Support PHP 5.2 */
+/* Support PHP < 5.3.7 */
 #ifndef ZEND_FE_END
 #define ZEND_FE_END {NULL, NULL, NULL}
 #endif
