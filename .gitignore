@@ -21,3 +21,5 @@ autom4te.cache/
 modules/
 build/
 run-tests.php
+tmp-php.ini
+ltmain.sh.backup
