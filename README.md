@@ -7,7 +7,7 @@ This extension allows Snappy.
 Documentation for Snappy can be found at
 [» http://google.github.io/snappy/](http://google.github.io/snappy/).
 
-## Build
+## Build from sources
 
     % git clone --recursive --depth=1 https://github.com/kjdev/php-ext-snappy.git
     % cd php-ext-snappy
@@ -16,9 +16,19 @@ Documentation for Snappy can be found at
     % make
     % make install
 
-> use system library: `./configure --with-snappy-includedir=/usr`
+To use the system library
 
-## Configration
+``` bash
+% ./configure --with-snappy-includedir=/usr
+```
+
+## Distribution binary packages
+
+### Fedora / CentOS / RHEL
+
+RPM packages of this extension are available in [» Remi's RPM repository](https://rpms.remirepo.net/) and are named **php-snappy**.
+
+## Configuration
 
 snappy.ini:
 
