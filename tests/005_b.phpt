@@ -2,7 +2,7 @@
 Test snappy_uncompress() function : error conditions
 --SKIPIF--
 <?php
-if (version_compare(PHP_VERSION, '8.0', '>=')) die('skip PHP is too old');
+if (version_compare(PHP_VERSION, '8.0', '<')) die('skip PHP is too new');
 --FILE--
 <?php
 
@@ -10,17 +10,28 @@ echo "*** Testing snappy_uncompress() : error conditions ***\n";
 
 // Zero arguments
 echo "\n-- Testing snappy_uncompress() function with Zero arguments --\n";
-var_dump( snappy_uncompress() );
+try {
+  var_dump( snappy_uncompress() );
+} catch (Error $e) {
+  echo $e, PHP_EOL;
+}
 
 //Test snappy_uncompress with one more than the expected number of arguments
 echo "\n-- Testing snappy_uncompress() function with more than expected no. of arguments --\n";
 $data = 'string_val';
 $extra_arg = 10;
-var_dump( snappy_uncompress($data, $extra_arg) );
-
+try {
+  var_dump( snappy_uncompress($data, $extra_arg) );
+} catch (Error $e) {
+  echo $e, PHP_EOL;
+}
 
 echo "\n-- Testing with incorrect arguments --\n";
-var_dump(snappy_uncompress(123));
+try {
+  var_dump(snappy_uncompress(123));
+} catch (Error $e) {
+  echo $e, PHP_EOL;
+}
 
 class Tester
 {
@@ -31,21 +42,27 @@ class Tester
 }
 
 $testclass = new Tester();
-var_dump(snappy_uncompress($testclass));
+try {
+  var_dump(snappy_uncompress($testclass));
+} catch (Error $e) {
+  echo $e, PHP_EOL;
+}
 ?>
 ===DONE===
 --EXPECTF--
 *** Testing snappy_uncompress() : error conditions ***
 
 -- Testing snappy_uncompress() function with Zero arguments --
-
-Warning: snappy_uncompress() expects exactly 1 parameter, 0 given in %s on line %d
-bool(false)
+ArgumentCountError: snappy_uncompress() expects exactly 1 parameter, 0 given in %s:%d
+Stack trace:
+#0 %s(%d): snappy_uncompress()
+#1 {main}
 
 -- Testing snappy_uncompress() function with more than expected no. of arguments --
-
-Warning: snappy_uncompress() expects exactly 1 parameter, 2 given in %s on line %d
-bool(false)
+ArgumentCountError: snappy_uncompress() expects exactly 1 parameter, 2 given in %s:%d
+Stack trace:
+#0 %s(%d): snappy_uncompress(%s)
+#1 {main}
 
 -- Testing with incorrect arguments --
 

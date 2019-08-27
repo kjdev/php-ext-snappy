@@ -2,7 +2,7 @@
 Test snappy_compress() function : error conditions
 --SKIPIF--
 <?php
-if (version_compare(PHP_VERSION, '8.0', '>=')) die('skip PHP is too old');
+if (version_compare(PHP_VERSION, '8.0', '<')) die('skip PHP is too new');
 --FILE--
 <?php
 include(dirname(__FILE__) . '/data.inc');
@@ -11,13 +11,21 @@ echo "*** Testing snappy_compress() : error conditions ***\n";
 
 // Zero arguments
 echo "\n-- Testing snappy_compress() function with Zero arguments --\n";
-var_dump(snappy_compress());
+try {
+  var_dump(snappy_compress());
+} catch (Error $e) {
+  echo $e, PHP_EOL;
+}
 
 //Test snappy_compress with one more than the expected number of arguments
 echo "\n-- Testing snappy_compress() function with more than expected no. of arguments --\n";
 $data = 'string_val';
 $extra_arg = 10;
-var_dump(snappy_compress($data, $extra_arg));
+try {
+  var_dump(snappy_compress($data, $extra_arg));
+} catch (Error $e) {
+  echo $e, PHP_EOL;
+}
 
 class Tester {
     function Hello() {
@@ -27,21 +35,27 @@ class Tester {
 
 echo "\n-- Testing with incorrect parameters --\n";
 $testclass = new Tester();
-var_dump(snappy_compress($testclass));
+try {
+  var_dump(snappy_compress($testclass));
+} catch (Error $e) {
+  echo $e, PHP_EOL;
+}
 ?>
 ===Done===
 --EXPECTF--
 *** Testing snappy_compress() : error conditions ***
 
 -- Testing snappy_compress() function with Zero arguments --
-
-Warning: snappy_compress() expects exactly 1 parameter, 0 given in %s on line %d
-bool(false)
+ArgumentCountError: snappy_compress() expects exactly 1 parameter, 0 given in %s:%d
+Stack trace:
+#0 %s(%d): snappy_compress()
+#1 {main}
 
 -- Testing snappy_compress() function with more than expected no. of arguments --
-
-Warning: snappy_compress() expects exactly 1 parameter, 2 given in %s on line %d
-bool(false)
+ArgumentCountError: snappy_compress() expects exactly 1 parameter, 2 given in %s:%d
+Stack trace:
+#0 %s(%d): snappy_compress(%s)
+#1 {main}
 
 -- Testing with incorrect parameters --
 
