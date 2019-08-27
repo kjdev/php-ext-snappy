@@ -31,4 +31,13 @@ extern zend_module_entry snappy_module_entry;
 #define SNAPPY_G(v) (snappy_globals.v)
 #endif
 
+#if ZEND_MODULE_API_NO >= 20190128
+#ifndef TSRMLS_CC
+#define TSRMLS_CC
+#endif
+#ifndef TSRMLS_DC
+#define TSRMLS_DC
+#endif
+#endif
+
 #endif  /* PHP_SNAPPY_H */
