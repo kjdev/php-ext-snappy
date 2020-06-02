@@ -69,3 +69,14 @@ The original uncompressed data or FALSE on error.
     $uncompressed = snappy_uncompress($compressed);
 
     echo $uncompressed;
+
+## Ubuntu Tipps
+
+snappy requires C++ and therefore might require for you to install the  g++ or build-essential package. 
+    
+If you get an error about "this file requires compiler and library support" you might need to enfore the compilation with
+
+    $ export CXXFLAGS=-std=c++11
+    $ phpize
+    $ ./configure
+    $ make
