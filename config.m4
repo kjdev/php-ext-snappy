@@ -128,16 +128,6 @@ if test "$PHP_SNAPPY" != "no"; then
   AC_SUBST([SNAPPY_MINOR])
   AC_SUBST([SNAPPY_PATCHLEVEL])
 
-  if test -f "snappy/snappy-stubs-public.h.in"; then
-    if test "$SNAPPY_PATCHLEVEL" -ge 7; then
-      mv snappy/snappy-stubs-public.h.in snappy/snappy-stubs-public.h.in.orig
-      sed 's/${\(HAVE_[[A-Z\_]]*_H_01\)}/@\1@/' snappy/snappy-stubs-public.h.in.orig > snappy/snappy-stubs-public.h.in
-    fi
-  fi
-
-  AC_CONFIG_FILES([snappy/snappy-stubs-public.h])
-  AC_OUTPUT
-
   dnl Check for stdc++
   LIBNAME=stdc++
   AC_MSG_CHECKING([for stdc++])
@@ -164,6 +154,18 @@ if test "$PHP_SNAPPY" != "no"; then
 
   PHP_NEW_EXTENSION(snappy, snappy.c $SNAPPY_SOURCES, $ext_shared)
 
+  if test -f "$ext_srcdir/snappy/snappy-stubs-public.h.in"; then
+    if test "$SNAPPY_PATCHLEVEL" -ge 7; then
+      mv $ext_srcdir/snappy/snappy-stubs-public.h.in \
+      $ext_srcdir/snappy/snappy-stubs-public.h.in.orig
+
+      sed 's/${\(HAVE_[[A-Z\_]]*_H_01\)}/@\1@/' \
+      $ext_srcdir/snappy/snappy-stubs-public.h.in.orig > \
+      $ext_srcdir/snappy/snappy-stubs-public.h.in
+    fi
+  fi
+  AC_CONFIG_FILES([$ext_srcdir/snappy/snappy-stubs-public.h])
+  AC_OUTPUT
   PHP_ADD_BUILD_DIR($ext_builddir/snappy, 1)
   PHP_ADD_INCLUDE([$ext_srcdir/snappy])
   fi
