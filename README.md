@@ -30,7 +30,7 @@ RPM packages of this extension are available in [» Remi's RPM repository](https
 
 ## Configuration
 
-snappy.ini:
+php.ini:
 
     extension=snappy.so
 
