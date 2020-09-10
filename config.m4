@@ -69,7 +69,7 @@ if test "$PHP_SNAPPY" != "no"; then
 
   AC_PROG_CXX
   AC_LANG([C++])
-  AC_C_BIGENDIAN
+  AC_C_BIGENDIAN([AC_DEFINE([SNAPPY_IS_BIG_ENDIAN], [1], [snappy is big endian])])
   AC_CHECK_HEADERS([stdint.h stddef.h sys/mman.h sys/resource.h windows.h byteswap.h sys/byteswap.h sys/endian.h sys/time.h])
 
   AC_CHECK_FUNC([mmap])

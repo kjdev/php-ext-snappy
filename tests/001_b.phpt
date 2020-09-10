@@ -3,8 +3,8 @@ Test snappy_compress() function : basic functionality
 --SKIPIF--
 <?php
 include(dirname(__FILE__) . '/endianness.inc');
-if (!isLittleEndian()) {
-  die('skip Big endian');
+if (isLittleEndian()) {
+  die('skip Little endian');
 }
 --FILE--
 <?php
@@ -40,7 +40,7 @@ var_dump( bin2hex(snappy_compress($smallstring) ));
 --EXPECT--
 *** Testing snappy_compress() : basic functionality ***
 -- Compression --
-string(32) "aa706ffad8df5ca3f37f4ec061d91ca2"
+string(32) "c66d873df26fbc39f55fde06affbb6c7"
 int(0)
 -- Compression --
 string(58) "1b684120736d616c6c20737472696e6720746f20636f6d70726573730a"
