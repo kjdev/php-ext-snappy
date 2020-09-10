@@ -3,8 +3,8 @@ Test snappy_compress() function : variation
 --SKIPIF--
 <?php
 include(dirname(__FILE__) . '/endianness.inc');
-if (!isLittleEndian()) {
-  die('skip Big endian');
+if (isLittleEndian()) {
+  die('skip Little endian');
 }
 --FILE--
 <?php
@@ -26,7 +26,7 @@ var_dump(md5($output) === md5(snappy_uncompress($c)));
 *** Testing snappy_compress() : variation ***
 
 -- Testing multiple compression --
-string(32) "aa706ffad8df5ca3f37f4ec061d91ca2"
+string(32) "c66d873df26fbc39f55fde06affbb6c7"
 bool(false)
 bool(true)
 ===Done===

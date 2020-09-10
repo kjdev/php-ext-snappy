@@ -56,6 +56,8 @@ matrix:
     - php: 7.2
     - php: 7.3
     - php: 7.4
+    - php: 7.4
+      arch: s390x
     - php: nightly
   fast_finish: true
   allow_failures:
