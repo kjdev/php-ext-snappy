@@ -100,6 +100,54 @@ ZEND_GET_MODULE(snappy)
 
 #define SNAPPY_BUFFER_SIZE 4096
 
+static int php_snappy_compress(const char* in, const size_t in_len,
+                               char** out, size_t* out_len)
+{
+    *out_len = snappy_max_compressed_length(in_len);
+    *out = (char*)emalloc(*out_len);
+    if (!*out) {
+        zend_error(E_WARNING, "snappy_compress : memory error");
+        *out_len = 0;
+        return FAILURE;
+    }
+
+    if (snappy_compress(in, in_len, *out, out_len) != SNAPPY_OK) {
+        zend_error(E_WARNING, "snappy_compress : data error");
+        efree(*out);
+        *out = NULL;
+        *out_len = 0;
+        return FAILURE;
+    }
+
+    return SUCCESS;
+}
+
+static int php_snappy_uncompress(const char* in, const size_t in_len,
+                                 char** out, size_t* out_len)
+{
+    if (snappy_uncompressed_length(in, in_len, out_len) != SNAPPY_OK) {
+        zend_error(E_WARNING, "snappy_uncompress : output length error");
+        return FAILURE;
+    }
+
+    *out = (char*)emalloc(*out_len);
+    if (!*out) {
+        zend_error(E_WARNING, "snappy_uncompress : memory error");
+        *out_len = 0;
+        return FAILURE;
+    }
+
+    if (snappy_uncompress(in, in_len, *out, out_len) != SNAPPY_OK) {
+        zend_error(E_WARNING, "snappy_uncompress : data error");
+        efree(*out);
+        *out = NULL;
+        *out_len = 0;
+        return FAILURE;
+    }
+
+    return SUCCESS;
+}
+
 static ZEND_FUNCTION(snappy_compress)
 {
     zval *data;
@@ -117,24 +165,16 @@ static ZEND_FUNCTION(snappy_compress)
         RETURN_FALSE;
     }
 
-    output_len = snappy_max_compressed_length(Z_STRLEN_P(data));
-    output = (char *)emalloc(output_len);
-    if (!output) {
-        zend_error(E_WARNING, "snappy_compress : memory error");
+    if (php_snappy_compress(Z_STRVAL_P(data), Z_STRLEN_P(data),
+                            &output, &output_len) == FAILURE) {
         RETURN_FALSE;
     }
 
-
-    if (snappy_compress(Z_STRVAL_P(data), Z_STRLEN_P(data),
-                        output, &output_len) == SNAPPY_OK) {
 #if ZEND_MODULE_API_NO >= 20141001
-        RETVAL_STRINGL(output, output_len);
+    RETVAL_STRINGL(output, output_len);
 #else
-        RETVAL_STRINGL(output, output_len, 1);
+    RETVAL_STRINGL(output, output_len, 1);
 #endif
-    } else {
-        RETVAL_FALSE;
-    }
 
     efree(output);
 }
@@ -156,29 +196,16 @@ static ZEND_FUNCTION(snappy_uncompress)
         RETURN_FALSE;
     }
 
-    if (snappy_uncompressed_length(Z_STRVAL_P(data), Z_STRLEN_P(data),
-                                   &output_len) != SNAPPY_OK) {
-        zend_error(E_WARNING, "snappy_uncompress : output length error");
+    if (php_snappy_uncompress(Z_STRVAL_P(data), Z_STRLEN_P(data),
+                              &output, &output_len) == FAILURE) {
         RETURN_FALSE;
     }
 
-    output = (char *)emalloc(output_len);
-    if (!output) {
-        zend_error(E_WARNING, "snappy_uncompress : memory error");
-        RETURN_FALSE;
-    }
-
-    if (snappy_uncompress(Z_STRVAL_P(data), Z_STRLEN_P(data),
-                          output, &output_len) == SNAPPY_OK) {
 #if ZEND_MODULE_API_NO >= 20141001
-        RETVAL_STRINGL(output, output_len);
+    RETVAL_STRINGL(output, output_len);
 #else
-        RETVAL_STRINGL(output, output_len, 1);
+    RETVAL_STRINGL(output, output_len, 1);
 #endif
-    } else {
-        zend_error(E_WARNING, "snappy_uncompress : data error");
-        RETVAL_FALSE;
-    }
 
     efree(output);
 }
@@ -205,21 +232,11 @@ static int APC_SERIALIZER_NAME(snappy)(APC_SERIALIZER_ARGS)
         return 0;
     }
 
-    *buf_len = snappy_max_compressed_length(ZSTR_LEN(var.s));
-    *buf = (char*)emalloc(*buf_len);
-    if (*buf == NULL) {
-        *buf_len = 0;
-        return 0;
-    }
-
-    if (snappy_compress(ZSTR_VAL(var.s), ZSTR_LEN(var.s),
-                        (char*)*buf, buf_len) != SNAPPY_OK) {
-        efree(*buf);
-        *buf = NULL;
-        *buf_len = 0;
-        result = 0;
-    } else {
+    if (php_snappy_compress(ZSTR_VAL(var.s), ZSTR_LEN(var.s),
+                            (char **)buf, buf_len) == SUCCESS) {
         result = 1;
+    } else {
+        result = 0;
     }
 
     smart_str_free(&var);
@@ -235,19 +252,8 @@ static int APC_UNSERIALIZER_NAME(snappy)(APC_UNSERIALIZER_ARGS)
     size_t var_len;
     unsigned char* var;
 
-    if (snappy_uncompressed_length(buf, buf_len, &var_len) != SNAPPY_OK) {
-        ZVAL_NULL(value);
-        return 0;
-    }
-
-    var = (unsigned char*)emalloc(var_len);
-    if (var == NULL) {
-        ZVAL_NULL(value);
-        return 0;
-    }
-
-    if (snappy_uncompress(buf, buf_len, var, &var_len) != SNAPPY_OK) {
-        efree(var);
+    if (php_snappy_uncompress(buf, buf_len,
+                              (char **)&var, &var_len) != SUCCESS) {
         ZVAL_NULL(value);
         return 0;
     }
