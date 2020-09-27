@@ -53,13 +53,13 @@ try {
 *** Testing snappy_uncompress() : error conditions ***
 
 -- Testing snappy_uncompress() function with Zero arguments --
-ArgumentCountError: snappy_uncompress() expects exactly 1 parameter, 0 given in %s:%d
+ArgumentCountError: snappy_uncompress() expects exactly 1 %s, 0 given in %s:%d
 Stack trace:
 #0 %s(%d): snappy_uncompress()
 #1 {main}
 
 -- Testing snappy_uncompress() function with more than expected no. of arguments --
-ArgumentCountError: snappy_uncompress() expects exactly 1 parameter, 2 given in %s:%d
+ArgumentCountError: snappy_uncompress() expects exactly 1 %s, 2 given in %s:%d
 Stack trace:
 #0 %s(%d): snappy_uncompress(%s)
 #1 {main}

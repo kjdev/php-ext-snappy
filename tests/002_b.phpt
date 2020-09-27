@@ -46,13 +46,13 @@ try {
 *** Testing snappy_compress() : error conditions ***
 
 -- Testing snappy_compress() function with Zero arguments --
-ArgumentCountError: snappy_compress() expects exactly 1 parameter, 0 given in %s:%d
+ArgumentCountError: snappy_compress() expects exactly 1 %s, 0 given in %s:%d
 Stack trace:
 #0 %s(%d): snappy_compress()
 #1 {main}
 
 -- Testing snappy_compress() function with more than expected no. of arguments --
-ArgumentCountError: snappy_compress() expects exactly 1 parameter, 2 given in %s:%d
+ArgumentCountError: snappy_compress() expects exactly 1 %s, 2 given in %s:%d
 Stack trace:
 #0 %s(%d): snappy_compress(%s)
 #1 {main}
