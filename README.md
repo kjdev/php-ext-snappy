@@ -1,7 +1,7 @@
 # Snappy Extension for PHP
 
-[![Linux](https://github.com/kjdev/php-ext-snappy/workflows/Linux/badge.svg)](https://github.com/kjdev/php-ext-snappy/actions?query=workflow%3ALinux)
-[![Windows](https://github.com/kjdev/php-ext-snappy/workflows/Windows/badge.svg)](https://github.com/kjdev/php-ext-snappy/actions?query=workflow%3AWindows)
+[![Linux](https://github.com/kjdev/php-ext-snappy/workflows/Linux/badge.svg?branch=master)](https://github.com/kjdev/php-ext-snappy/actions?query=workflow%3ALinux+branch%3Amaster)
+[![Windows](https://github.com/kjdev/php-ext-snappy/workflows/Windows/badge.svg?branch=master)](https://github.com/kjdev/php-ext-snappy/actions?query=workflow%3AWindows+branch%3Amaster)
 
 This extension allows Snappy.
 
