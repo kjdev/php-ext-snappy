@@ -217,17 +217,9 @@ static int APC_SERIALIZER_NAME(snappy)(APC_SERIALIZER_ARGS)
     php_serialize_data_t var_hash;
     smart_str var = {0};
 
-    BG(serialize_lock)++;
     PHP_VAR_SERIALIZE_INIT(var_hash);
     php_var_serialize(&var, (zval*) value, &var_hash);
     PHP_VAR_SERIALIZE_DESTROY(var_hash);
-    BG(serialize_lock)--;
-
-    if (EG(exception)) {
-        smart_str_free(&var);
-        var.s = NULL;
-    }
-
     if (var.s == NULL) {
         return 0;
     }
@@ -258,12 +250,10 @@ static int APC_UNSERIALIZER_NAME(snappy)(APC_UNSERIALIZER_ARGS)
         return 0;
     }
 
-    BG(serialize_lock)++;
     PHP_VAR_UNSERIALIZE_INIT(var_hash);
     tmp = var;
     result = php_var_unserialize(value, &tmp, var + var_len, &var_hash);
     PHP_VAR_UNSERIALIZE_DESTROY(var_hash);
-    BG(serialize_lock)--;
 
     if (!result) {
         php_error_docref(NULL, E_NOTICE,
