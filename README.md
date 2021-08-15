@@ -57,7 +57,7 @@ string snappy_uncompress( string $data )
 
 name:
 
-    The data compressed by snappy_gzcompress(). 
+    The data compressed by snappy_compress(). 
 
 ### return values
 
