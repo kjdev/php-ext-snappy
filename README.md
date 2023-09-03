@@ -10,17 +10,19 @@ Documentation for Snappy can be found at
 
 ## Build from sources
 
-    % git clone --recursive --depth=1 https://github.com/kjdev/php-ext-snappy.git
-    % cd php-ext-snappy
-    % phpize
-    % ./configure
-    % make
-    % make install
+```shell
+git clone --recursive --depth=1 https://github.com/kjdev/php-ext-snappy.git
+cd php-ext-snappy
+phpize
+./configure
+make
+make install
+```
 
 To use the system library
 
-``` bash
-% ./configure --with-snappy-includedir=/usr
+```shell
+./configure --with-snappy-includedir=/usr
 ```
 
 ## Distribution binary packages
@@ -33,51 +35,59 @@ RPM packages of this extension are available in [» Remi's RPM repository](https
 
 php.ini:
 
-    extension=snappy.so
+```ini
+extension=snappy.so
+```
 
-## Function : snappy_compress
+### Function : `snappy_compress()`
 
 string snappy_compress( string $data )
 
-### parameters
+#### parameters
 
 data:
 
     The data to compress.
 
-### return values
+#### return values
 
 The compressed string or FALSE if an error occurred.
 
-## Function : snappy_uncompress
+### Function : `snappy_uncompress()`
 
 string snappy_uncompress( string $data )
 
-### parameters
+#### parameters
 
 name:
 
     The data compressed by snappy_compress(). 
 
-### return values
+#### return values
 
 The original uncompressed data or FALSE on error.
 
 ## Example
 
-    $compressed = snappy_compress('Compress me');
+```php
+$compressed = snappy_compress('Compress me');
 
-    $uncompressed = snappy_uncompress($compressed);
+$uncompressed = snappy_uncompress($compressed);
 
-    echo $uncompressed;
+echo $uncompressed;
+```
 
-## Ubuntu Tipps
+## Troubleshooting
 
-snappy requires C++ and therefore might require for you to install the  g++ or build-essential package. 
+### Ubuntu / OSX
+
+Snappy requires C++ and therefore might require for you to install the g++ or build-essential package. 
     
-If you get an error about "this file requires compiler and library support" you might need to enfore the compilation with
+If you get an error about "this file requires compiler and library support" or [compilation errors on OSX](https://github.com/kjdev/php-ext-snappy/issues/19), you need to enforce the compilation with `-std=c++11` flag:
 
-    $ export CXXFLAGS=-std=c++11
-    $ phpize
-    $ ./configure
-    $ make
+```shell
+export CXXFLAGS=-std=c++11
+phpize
+./configure
+make
+```
