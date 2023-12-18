@@ -68,7 +68,7 @@ if test "$PHP_SNAPPY" != "no"; then
   SNAPPY_PATCHLEVEL="7"
 
   AC_PROG_CXX
-  AC_LANG([C++])
+  AC_LANG_PUSH([C++])
   AC_C_BIGENDIAN([AC_DEFINE([SNAPPY_IS_BIG_ENDIAN], [1], [snappy is big endian])])
   AC_CHECK_HEADERS([stdint.h stddef.h sys/mman.h sys/resource.h windows.h byteswap.h sys/byteswap.h sys/endian.h sys/time.h])
 
@@ -101,6 +101,7 @@ if test "$PHP_SNAPPY" != "no"; then
   if test x$snappy_have_builtin_ctz = xyes ; then
     AC_DEFINE([HAVE_BUILTIN_CTZ], [1], [Define to 1 if the compiler supports __builtin_ctz and friends.])
   fi
+  AC_LANG_POP([C++])
 
   if test "$ac_cv_header_stdint_h" = "yes"; then
     AC_SUBST([ac_cv_have_stdint_h], [1])
