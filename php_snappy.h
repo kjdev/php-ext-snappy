@@ -3,7 +3,7 @@
 #define PHP_SNAPPY_H
 
 #define SNAPPY_EXT_VERSION "0.2.1"
-#define SNAPPY_LIB_VERSION "1.1.8"
+#define SNAPPY_LIB_VERSION "1.2.1"
 
 extern zend_module_entry snappy_module_entry;
 #define phpext_snappy_ptr &snappy_module_entry
