@@ -1,0 +1,14 @@
+{
+  "name": "kjdev/snappy",
+  "type": "php-ext",
+  "license": "MIT",
+  "description": "A compression/decompression with Snappy",
+  "require": {
+    "php": ">= 5.2.0"
+  },
+  "php-ext": {
+    "extension-name": "snappy",
+    "download-url-method": "pre-packaged-source",
+    "configure-options": []
+  }
+}
