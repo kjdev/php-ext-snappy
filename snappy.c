@@ -54,10 +54,10 @@ PHP_MINFO_FUNCTION(snappy)
     php_info_print_table_start();
     php_info_print_table_row(2, "Snappy support", "enabled");
     php_info_print_table_row(2, "Extension Version", SNAPPY_EXT_VERSION);
-#ifdef HAVE_LIBSNAPPY
-    php_info_print_table_row(2, "Snappy Version", "system library");
-#else
+#ifdef SNAPPY_LIB_VERSION
     php_info_print_table_row(2, "Snappy Version", SNAPPY_LIB_VERSION);
+#else
+    php_info_print_table_row(2, "Snappy Version", "system library");
 #endif
 #if PHP_MAJOR_VERSION >= 7 && defined(HAVE_APCU_SUPPORT)
     php_info_print_table_row(2, "Snappy APCu serializer ABI",
