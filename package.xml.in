@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.10.13" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+ <name>snappy</name>
+ <channel>pecl.php.net</channel>
+ <summary>Snappy extension</summary>
+ <description>A compression/decompression with Snappy</description>
+ <lead>
+  <name>Tatsuya KAMIJO</name>
+  <user>kjdev</user>
+  <email>kjdev@php.net</email>
+  <active>yes</active>
+ </lead>
+ <date>${DATE}</date>
+ <version>
+  <release>${VERSION}</release>
+  <api>${VERSION}</api>
+ </version>
+ <stability>
+  <release>${STABILITY}</release>
+  <api>${STABILITY}</api>
+ </stability>
+ <license>MIT</license>
+ <notes>
+${NOTES}
+ </notes>
+ <contents>
+  <dir name="/">
+   <file name="LICENSE" role="doc" />
+   <file name="README.md" role="doc" />
+   <file name="config.m4" role="src" />
+   <file name="config.w32" role="src" />
+   <file name="php_snappy.h" role="src" />
+   <file name="snappy.c" role="src" />
+   <file name="snappy/COPYING" role="doc" />
+   <file name="snappy/snappy-c.cc" role="src" />
+   <file name="snappy/snappy-c.h" role="src" />
+   <file name="snappy/snappy-internal.h" role="src" />
+   <file name="snappy/snappy-sinksource.cc" role="src" />
+   <file name="snappy/snappy-sinksource.h" role="src" />
+   <file name="snappy/snappy-stubs-internal.cc" role="src" />
+   <file name="snappy/snappy-stubs-internal.h" role="src" />
+   <file name="snappy/snappy-stubs-public.h.in" role="src" />
+   <file name="snappy/snappy.cc" role="src" />
+   <file name="snappy/snappy.h" role="src" />
+   <file name="tests/001.phpt" role="test" />
+   <file name="tests/001_b.phpt" role="test" />
+   <file name="tests/002.phpt" role="test" />
+   <file name="tests/002_b.phpt" role="test" />
+   <file name="tests/003.phpt" role="test" />
+   <file name="tests/003_b.phpt" role="test" />
+   <file name="tests/004.phpt" role="test" />
+   <file name="tests/005.phpt" role="test" />
+   <file name="tests/005_b.phpt" role="test" />
+   <file name="tests/apcu_serializer.phpt" role="test" />
+   <file name="tests/data.inc" role="test" />
+   <file name="tests/endianness.inc" role="test" />
+   <file name="tests/info.phpt" role="test" />
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.2</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0</min>
+   </pearinstaller>
+  </required>
+ </dependencies>
+ <providesextension>snappy</providesextension>
+ <extsrcrelease />
+</package>
