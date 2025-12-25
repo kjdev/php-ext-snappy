@@ -72,10 +72,12 @@ if (-not (Test-Path "C:\php\bin")) {
     Expand-Archive "C:\php\$bname" "C:\php\bin"
 }
 
-# # library dependency: "C:\php\deps"
-# $bname = "$env:DEP-$env:VS-$env:ARCH.zip"
-# if (-not (Test-Path "C:\php\$bname")) {
-#     echo "Download: https://windows.php.net/downloads/pecl/deps/$bname"
-#     Invoke-WebRequest "https://windows.php.net/downloads/pecl/deps/$bname" -OutFile "C:\php\$bname"
-#     Expand-Archive "C:\php\$bname" 'C:\php\deps'
-# }
+# library dependency: "C:\php\deps"
+if ("$env:DEP" -ne "") {
+    $bname = "$env:DEP-$env:VS-$env:ARCH.zip"
+    if (-not (Test-Path "C:\php\$bname")) {
+        echo "Download: https://windows.php.net/downloads/pecl/deps/$bname"
+        Invoke-WebRequest "https://windows.php.net/downloads/pecl/deps/$bname" -OutFile "C:\php\$bname"
+        Expand-Archive "C:\php\$bname" "C:\php\deps"
+    }
+}
