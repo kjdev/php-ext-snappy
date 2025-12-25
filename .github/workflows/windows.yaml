@@ -33,6 +33,8 @@ jobs:
           - ''
           - 'vcpkg'
         exclude:
+          - php: '8.5'
+            vs: vs16
           - php: '8.4'
             vs: vs16
           - php: '8.3'
